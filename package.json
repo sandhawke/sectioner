@@ -1,6 +1,6 @@
 {
   "name": "sectioner",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Use <h1>,<h2>,etc tags to break an HTML doc into <sections>",
   "main": "index.js",
   "bin": "cmd.js",
