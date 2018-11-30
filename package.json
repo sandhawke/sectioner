@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Use <h1>,<h2>,etc tags to break an HTML doc into <sections>",
   "main": "index.js",
+  "bin": "cmd.js",
   "scripts": {
     "test": "standard && tap --cov test*.js"
   },

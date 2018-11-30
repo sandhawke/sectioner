@@ -9,7 +9,8 @@ Turn HTML like this
 <p>para a2</p>
 <h1>HEAD-B</h1>
 <p>para b1</p>
-</body></html>```
+</body></html>
+```
 
 into an object tree like this:
 

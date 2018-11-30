@@ -76,3 +76,29 @@ test(t => {
 </section>`)
   t.end()
 })
+
+test(t => {
+  const h = `
+<html><head><link foo bar></head><body>
+<p>para zero</p>
+<h1>HEAD-A</h1>
+<p>para a1</p>
+`
+  const html = section.convert(h)
+  // console.log(html)
+  t.equal(html, `<!DOCTYPE html>
+<html>
+    <head>
+        <link foo="" bar="">
+    </head>
+    <body>
+        <p>para zero</p>
+        <section>
+            <h1><span id="section_1"></span>1. HEAD-A</h1>
+            <p>para a1</p>
+        </section>
+    </body>
+</html>
+`)
+  t.end()
+})

@@ -23,6 +23,7 @@ class Section {
     if (!this.intro) this.intro = [] // child elements, if any, not subsections
     if (!this.subs) this.subs = [] // then come the subsections
     if (!this.ids) this.ids = []
+    if (!this.head) this.head = null // means NOT html root
     // this.title
   }
 
@@ -63,6 +64,23 @@ class Section {
       return (''.padStart(level * 4, ' '))
     }
 
+    if (this.head) {
+      log('<!DOCTYPE html>', level)
+      log('<html>', level)
+      level++
+      log('<head>', level)
+      level++
+
+      for (const child of this.head) {
+        log(child, level)
+      }
+
+      level--
+      log('</head>', level)
+      log('<body>', level)
+      level++
+    }
+
     if (this.hLevel > 0) {
       log('<section>', level)
       level++
@@ -84,6 +102,15 @@ class Section {
       level--
       log('</section>', level)
     }
+
+    if (this.head) {
+      level--
+      log('</body>', level)
+      level--
+      log('</html>', level)
+      log('', level)
+    }
+
     return out.join('\n')
   }
 }
@@ -104,6 +131,11 @@ function parse ($, config = {}) {
   let cur = creator()
   debug('init cur = ', cur)
   let curLevel = 0
+
+  $('head').children().each(function (index) {
+    if (!cur.head) cur.head = []
+    cur.head.push($(this).clone().wrap('<p>').parent().html())
+  })
 
   $('body').children().each(function (index) {
     const t = $(this).prop('tagName')
