@@ -2,8 +2,8 @@ const debug = require('debug')('gdoc2respec-section')
 const cheerio = require('cheerio')
 const H = require('escape-html-template-tag')
 
-function convert (str) {
-  const root = parse(str)
+function convert (str, config) {
+  const root = parse(str, config)
   return root.htmlTo()
 }
 
@@ -43,6 +43,11 @@ class Section {
     return this.coord.length
   }
 
+  // just because the name htmlTo is confusing if you're not passing logger
+  html () {
+    return this.htmlTo()
+  }
+
   htmlTo (log, level = 0) {
     if (!this.coord) this.assignCoordinates()
     const out = []
@@ -60,8 +65,10 @@ class Section {
       out.push(data)
     }
 
-    function indent (level) {
-      return (''.padStart(level * 4, ' '))
+    const indent = (level) => {
+      let mult = this.config.indent
+      if (mult === undefined) mult = 4
+      return (''.padStart(level * mult, ' '))
     }
 
     if (this.head) {
@@ -86,8 +93,11 @@ class Section {
       level++
       const defaultId = 'section_' + this.coordText('_', '')
       const ids = this.ids.concat([defaultId]).map(id => H`<span id="${id}"></span>`)
-
-      log(H`<h${this.hLevel}>${ids}${this.coordText()} ${this.title || ''}</h${this.hLevel}>`, level)
+      let numbering = ''
+      if (this.config.numbering) {
+        numbering = this.coordText() + ' '
+      }
+      log(H`<h${this.hLevel}>${ids}${numbering}${this.title || ''}</h${this.hLevel}>`, level)
     }
 
     for (const child of this.intro) {
@@ -128,7 +138,7 @@ class Section {
 function parse ($, config = {}) {
   if (typeof $ === 'string') $ = cheerio.load($)
   let creator = config.createSection || createSection
-  let cur = creator()
+  let cur = creator({ config })
   debug('init cur = ', cur)
   let curLevel = 0
 
@@ -167,7 +177,7 @@ function parse ($, config = {}) {
   return cur
 
   function sectionStarts (title) {
-    const me = creator({ title })
+    const me = creator({ config, title })
     me.parent = cur
     cur.subs.push(me)
     cur = me

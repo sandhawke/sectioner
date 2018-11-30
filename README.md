@@ -2,14 +2,12 @@
 Turn HTML like this
 
 ```html
-<html><body>
 <p>para zero</p>
 <h1>HEAD-A</h1>
 <p>para a1</p>
 <p>para a2</p>
 <h1>HEAD-B</h1>
 <p>para b1</p>
-</body></html>
 ```
 
 into an object tree like this:
@@ -40,8 +38,38 @@ or new HTML something like this:
 </section>
 ```
 
+## Command line
+
 That's from the command-line:
 ```bash
 $ sectioner example/doc1.html
 ```
+## API
 
+```js
+const sectioner = require('sectioner')
+const root = sectioner.parse('...')
+
+// do stuff with root, which is a Section.  For each Section s:
+//
+//   s.title  -- text of the title
+//   s.ids    -- array of html ids you want for this section
+//   s.intro  -- array of html bits, eg '<p>...</p>' before subsections
+//   s.subs   -- array of subsections, new sectioner.Section()
+//   s.head   -- null, or like intro for the HTML <head>
+
+// after manipulating the tree how you like, optionally call
+
+root.assignCoordinates()
+
+// then you can use
+//   s.coord  -- array like [1,3] for section 1.3
+//   s.coordText   --- 1.3.
+//   s.coordText('/', ':') --   1/3:
+//   s.hLevel    2 (in this case), h2, because 1.3 is second level
+
+// finally
+
+const html = root.html()
+send(html)
+```

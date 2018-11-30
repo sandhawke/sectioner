@@ -15,7 +15,7 @@ test(t => {
 
 test(t => {
   const h = '<h1>Hello</h1>'
-  t.equal(section.convert(h), `<section>
+  t.equal(section.convert(h, { numbering: true }), `<section>
     <h1><span id="section_1"></span>1. Hello</h1>
 </section>`)
   t.end()
@@ -43,7 +43,7 @@ test(t => {
 
 
 `
-  const root = section.parse(h)
+  const root = section.parse(h, { numbering: true })
   // console.log('\n\n\nOUT\n\n', root.subs[0])
   // console.log('\n\n\nOUT\n\n', JSON.stringify(root, null, 4))
   // console.log('\n\n\nHTML\n\n', root.htmlTo())
@@ -94,7 +94,7 @@ test(t => {
     <body>
         <p>para zero</p>
         <section>
-            <h1><span id="section_1"></span>1. HEAD-A</h1>
+            <h1><span id="section_1"></span>HEAD-A</h1>
             <p>para a1</p>
         </section>
     </body>
