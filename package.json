@@ -1,0 +1,34 @@
+{
+  "name": "sectioner",
+  "version": "0.0.1",
+  "description": "Use <h1>,<h2>,etc tags to break an HTML doc into <sections>",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && tap --cov test*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandhawke/sectioner.git"
+  },
+  "keywords": [
+    "html",
+    "section",
+    "headings",
+    "h1"
+  ],
+  "author": "Sandro Hawke (http://hawke.org/sandro)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sandhawke/sectioner/issues"
+  },
+  "homepage": "https://github.com/sandhawke/sectioner#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "debug": "^4.1.0",
+    "escape-html-template-tag": "^1.1.0"
+  },
+  "devDependencies": {
+    "tap": "^12.1.0",
+    "tape": "^4.9.1"
+  }
+}
